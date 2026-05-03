@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 03, 2026 at 04:09 PM
+-- Generation Time: May 03, 2026 at 07:00 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -36,10 +36,10 @@ CREATE TABLE `audit_log` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `deleveries`
+-- Table structure for table `deliveries`
 --
 
-CREATE TABLE `deleveries` (
+CREATE TABLE `deliveries` (
   `id` int(11) NOT NULL,
   `driver_id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
@@ -185,9 +185,9 @@ ALTER TABLE `audit_log`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `deleveries`
+-- Indexes for table `deliveries`
 --
-ALTER TABLE `deleveries`
+ALTER TABLE `deliveries`
   ADD PRIMARY KEY (`id`),
   ADD KEY `customer_id` (`customer_id`),
   ADD KEY `driver_id` (`driver_id`);
@@ -277,7 +277,7 @@ ALTER TABLE `packages`
 -- AUTO_INCREMENT for table `parts`
 --
 ALTER TABLE `parts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -302,11 +302,11 @@ ALTER TABLE `vehicles`
 --
 
 --
--- Constraints for table `deleveries`
+-- Constraints for table `deliveries`
 --
-ALTER TABLE `deleveries`
-  ADD CONSTRAINT `deleveries_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `deleveries_ibfk_2` FOREIGN KEY (`driver_id`) REFERENCES `drivers` (`user_id`);
+ALTER TABLE `deliveries`
+  ADD CONSTRAINT `deliveries_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `deliveries_ibfk_2` FOREIGN KEY (`driver_id`) REFERENCES `drivers` (`user_id`);
 
 --
 -- Constraints for table `drivers`
@@ -318,7 +318,7 @@ ALTER TABLE `drivers`
 -- Constraints for table `feedback`
 --
 ALTER TABLE `feedback`
-  ADD CONSTRAINT `feedback_ibfk_1` FOREIGN KEY (`delivery_id`) REFERENCES `deleveries` (`id`);
+  ADD CONSTRAINT `feedback_ibfk_1` FOREIGN KEY (`delivery_id`) REFERENCES `deliveries` (`id`);
 
 --
 -- Constraints for table `maintenance_records`
@@ -330,7 +330,7 @@ ALTER TABLE `maintenance_records`
 -- Constraints for table `packages`
 --
 ALTER TABLE `packages`
-  ADD CONSTRAINT `packages_ibfk_1` FOREIGN KEY (`delivery_id`) REFERENCES `deleveries` (`id`);
+  ADD CONSTRAINT `packages_ibfk_1` FOREIGN KEY (`delivery_id`) REFERENCES `deliveries` (`id`);
 
 --
 -- Constraints for table `users`
