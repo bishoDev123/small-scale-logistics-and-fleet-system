@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 29, 2026 at 08:16 PM
+-- Generation Time: May 03, 2026 at 04:09 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -108,6 +108,19 @@ CREATE TABLE `packages` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `parts`
+--
+
+CREATE TABLE `parts` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `max_life` int(11) NOT NULL,
+  `current_usage` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `roles`
 --
 
@@ -145,7 +158,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role_id`) VALUES
-(1, 'Alice', 'Alice@gmail.com', '12345678', 4);
+(1, 'Alice', 'Alice@gmail.com', '12345678', 4),
+(3, 'beshoy', 'beshoy@gmail.com', 'ajs;lkdf', 3);
 
 -- --------------------------------------------------------
 
@@ -206,6 +220,12 @@ ALTER TABLE `packages`
   ADD KEY `delivery_id` (`delivery_id`);
 
 --
+-- Indexes for table `parts`
+--
+ALTER TABLE `parts`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `roles`
 --
 ALTER TABLE `roles`
@@ -254,6 +274,12 @@ ALTER TABLE `packages`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `parts`
+--
+ALTER TABLE `parts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
@@ -263,7 +289,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `vehicles`
