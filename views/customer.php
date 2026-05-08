@@ -225,7 +225,7 @@ $packages = $packages ?? Package::getAll();
 </head>
 
 <body>
-
+<?php include "./views/partial/navbar.php"; ?>
 <div class="container">
 
     <div class="hero">

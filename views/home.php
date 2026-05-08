@@ -156,31 +156,33 @@ $isAuthenticated = isset($_SESSION['user']);
 
 <main class="content-wrapper">
 
-    <header>
+    <?php include "./views/partial/navbar.php"; ?>
 
-        <div class="logo">
-            Fleeter
-        </div>
-
-        <div class="nav-buttons">
-
-            <?php if (!$isAuthenticated): ?>
-
-                <a href="index.php?url=auth/login" class="btn btn-login">
-                    Login
-                </a>
-
-            <?php else: ?>
-
-                <a href="index.php?url=auth/logout" class="btn btn-logout">
-                    Logout
-                </a>
-
-            <?php endif; ?>
-
-        </div>
-
-    </header>
+<!--    <header>-->
+<!---->
+<!--        <div class="logo">-->
+<!--            Fleeter-->
+<!--        </div>-->
+<!---->
+<!--        <div class="nav-buttons">-->
+<!---->
+<!--            --><?php //if (!$isAuthenticated): ?>
+<!---->
+<!--                <a href="index.php?url=auth/login" class="btn btn-login">-->
+<!--                    Login-->
+<!--                </a>-->
+<!---->
+<!--            --><?php //else: ?>
+<!---->
+<!--                <a href="index.php?url=auth/logout" class="btn btn-logout">-->
+<!--                    Logout-->
+<!--                </a>-->
+<!---->
+<!--            --><?php //endif; ?>
+<!---->
+<!--        </div>-->
+<!---->
+<!--    </header>-->
 
     <section class="hero">
 

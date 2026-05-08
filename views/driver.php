@@ -65,7 +65,7 @@
 </head>
 
 <body>
-
+<?php include "./views/partial/navbar.php"; ?>
 <div class="card">
 
     <h1>

@@ -7,7 +7,6 @@ class DriverController
 {
     public function index()
     {
-        session_start();
 
         $user = $_SESSION['user'];
 
