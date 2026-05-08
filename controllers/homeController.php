@@ -8,9 +8,6 @@ class HomeController
     {
         session_start();
 
-        if (!isset($_SESSION['user'])) {
-            die("Access denied");
-        }
 
         $users = User::getAll();
 
