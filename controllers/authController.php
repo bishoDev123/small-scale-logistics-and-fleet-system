@@ -115,4 +115,13 @@ class AuthController
 
         require "views/login.php";
     }
+    public function logout()
+    {
+        $_SESSION = [];
+
+        session_destroy();
+
+        header("Location: index.php?url=home/index");
+        exit;
+    }
 }

@@ -38,7 +38,6 @@ class DispatcherController
     }
     public function assignDriver()
     {
-        session_start();
 
         $packageId = $_POST['package_id'];
         $driverId  = $_POST['driver_id'];

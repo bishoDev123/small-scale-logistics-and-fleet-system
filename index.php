@@ -1,4 +1,9 @@
 <?php
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $url = isset($_GET["url"]) ? $_GET["url"] : 'home/index';
 $url = explode('/', $url);
 

@@ -22,7 +22,6 @@ class DriverController
 
     public function assignVehicle()
     {
-        session_start();
 
         $user = $_SESSION['user'];
 

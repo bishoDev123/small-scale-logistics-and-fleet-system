@@ -1,21 +1,18 @@
+<?php
+
+$isAuthenticated = isset($_SESSION['user']);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
 
-    <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>
-        User Dashboard
-    </title>
+    <title>User Dashboard</title>
 
-    <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"
-    >
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
 
     <style>
 
@@ -26,8 +23,7 @@
             font-family: Arial, sans-serif;
         }
 
-        html,
-        body {
+        html, body {
             height: 100%;
         }
 
@@ -37,10 +33,7 @@
             flex-direction: column;
 
             background-image:
-                    linear-gradient(
-                            rgba(0,0,0,0.65),
-                            rgba(0,0,0,0.65)
-                    ),
+                    linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
                     url('https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?q=80&w=1920&auto=format&fit=crop');
 
             background-size: cover;
@@ -57,7 +50,6 @@
             padding: 20px 8%;
 
             background: rgba(255,255,255,0.08);
-
             backdrop-filter: blur(10px);
 
             display: flex;
@@ -70,8 +62,6 @@
         .logo {
             font-size: 30px;
             font-weight: bold;
-            color: white;
-            letter-spacing: 1px;
         }
 
         .nav-buttons {
@@ -83,8 +73,8 @@
             padding: 10px 18px;
             border-radius: 8px;
             text-decoration: none;
-            transition: 0.2s;
             font-weight: bold;
+            transition: 0.2s;
         }
 
         .btn-login {
@@ -106,7 +96,6 @@
         }
 
         .hero {
-            width: 100%;
             min-height: calc(100vh - 140px);
 
             display: flex;
@@ -121,7 +110,6 @@
         .hero h1 {
             font-size: 64px;
             margin-bottom: 20px;
-            text-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
 
         .hero p {
@@ -133,10 +121,8 @@
 
         .hero-buttons {
             margin-top: 35px;
-
             display: flex;
             gap: 20px;
-            flex-wrap: wrap;
         }
 
         .hero-btn {
@@ -144,7 +130,6 @@
             border-radius: 10px;
             text-decoration: none;
             font-weight: bold;
-            transition: 0.25s;
         }
 
         .primary-btn {
@@ -152,50 +137,16 @@
             color: white;
         }
 
-        .primary-btn:hover {
-            background: #1d4ed8;
-            transform: translateY(-2px);
-        }
-
         .secondary-btn {
             background: rgba(255,255,255,0.12);
             color: white;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .secondary-btn:hover {
-            background: rgba(255,255,255,0.2);
-            transform: translateY(-2px);
         }
 
         footer {
             flex-shrink: 0;
-
             padding: 25px;
-
             text-align: center;
-
             background: rgba(0,0,0,0.4);
-
-            backdrop-filter: blur(8px);
-
-            color: rgba(255,255,255,0.85);
-        }
-
-        @media (max-width: 768px) {
-
-            .hero h1 {
-                font-size: 42px;
-            }
-
-            .hero p {
-                font-size: 18px;
-            }
-
-            header {
-                padding: 18px 5%;
-            }
-
         }
 
     </style>
@@ -213,19 +164,19 @@
 
         <div class="nav-buttons">
 
-            <a
-                    href="index.php?url=auth/login"
-                    class="btn btn-login"
-            >
-                Login
-            </a>
+            <?php if (!$isAuthenticated): ?>
 
-            <a
-                    href="index.php?url=auth/logout"
-                    class="btn btn-logout"
-            >
-                Logout
-            </a>
+                <a href="index.php?url=auth/login" class="btn btn-login">
+                    Login
+                </a>
+
+            <?php else: ?>
+
+                <a href="index.php?url=auth/logout" class="btn btn-logout">
+                    Logout
+                </a>
+
+            <?php endif; ?>
 
         </div>
 
@@ -240,23 +191,26 @@
         <p>
             Manage packages, coordinate fleets,
             track shipments, and monitor logistics
-            operations through one powerful platform
-            designed for modern transportation businesses.
+            operations through one powerful platform.
         </p>
 
         <div class="hero-buttons">
 
-            <a
-                    href="index.php?url=auth/login"
-                    class="hero-btn primary-btn"
-            >
-                Get Started
-            </a>
+            <?php if (!$isAuthenticated): ?>
 
-            <a
-                    href="#"
-                    class="hero-btn secondary-btn"
-            >
+                <a href="index.php?url=auth/login" class="hero-btn primary-btn">
+                    Get Started
+                </a>
+
+            <?php else: ?>
+
+                <a href="index.php?url=customer/index" class="hero-btn primary-btn">
+                    Go to Dashboard
+                </a>
+
+            <?php endif; ?>
+
+            <a href="#" class="hero-btn secondary-btn">
                 Learn More
             </a>
 
@@ -267,10 +221,7 @@
 </main>
 
 <footer>
-
-    © <?= date('Y') ?> Fleeter.
-    All rights reserved.
-
+    © <?= date('Y') ?> Fleeter. All rights reserved.
 </footer>
 
 </body>
