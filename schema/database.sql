@@ -134,3 +134,8 @@ CREATE TABLE audit_log (
                            action VARCHAR(50) NOT NULL,
                            time_stamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+ALTER TABLE packages
+    ADD COLUMN customer_priority INT NOT NULL DEFAULT 1,
+ADD COLUMN perishable_status TINYINT(1) NOT NULL DEFAULT 0,
+ADD COLUMN promised_window INT NOT NULL DEFAULT 72;

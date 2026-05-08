@@ -15,10 +15,14 @@ class AuthController
 
             session_start();
 
-            $email = $_POST['email'];
-            $password = $_POST['password'];
+            $email =
+                $_POST['email'];
 
-            $isStaff = isset($_POST['is_staff']);
+            $password =
+                $_POST['password'];
+
+            $isStaff =
+                isset($_POST['is_staff']);
 
             $employeeCode =
                 $_POST['employee_code'] ?? '';
@@ -32,66 +36,83 @@ class AuthController
 
                 $_SESSION['user'] = $user;
 
+                /*
+                |--------------------------------------------------------------------------
+                | STAFF LOGIN
+                |--------------------------------------------------------------------------
+                */
+
                 if ($isStaff) {
 
                     if (
-                        $employeeCode ===
+                        $employeeCode !==
                         $user['employee_code']
                     ) {
 
-                        if (
-                            $user['role_name']
-                            === 'Driver'
-                        ) {
+                        echo "Invalid employee code";
 
-                            header(
-                                "Location: index.php?url=driver/index"
-                            );
-
-                            exit;
-                        }
-
-                        if (
-                            $user['role_name']
-                            === 'Dispatcher'
-                        ) {
-
-                            header(
-                                "Location: index.php?url=dispatcher/index"
-                            );
-
-                            exit;
-                        }
+                        return;
                     }
 
-                    echo "Invalid employee code";
+                    /*
+                    |--------------------------------------------------------------------------
+                    | DRIVER
+                    |--------------------------------------------------------------------------
+                    */
+
+                    if (
+                        $user['role_name']
+                        === 'Driver'
+                    ) {
+
+                        header(
+                            "Location: index.php?url=driver/index"
+                        );
+
+                        exit;
+                    }
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | DISPATCHER
+                    |--------------------------------------------------------------------------
+                    */
+
+                    if (
+                        $user['role_name']
+                        === 'Dispatcher'
+                    ) {
+
+                        header(
+                            "Location: index.php?url=dispatcher/index"
+                        );
+
+                        exit;
+                    }
+
+                    echo "Unauthorized staff role";
+
                     return;
                 }
 
+                /*
+                |--------------------------------------------------------------------------
+                | CUSTOMER LOGIN
+                |--------------------------------------------------------------------------
+                */
+
                 header(
-                    "Location: index.php?url=home/index"
+                    "Location: index.php?url=customer/index"
                 );
 
                 exit;
             }
 
             echo "Invalid credentials";
+
             return;
         }
 
         require "views/login.php";
-    }
-
-    public function logout()
-    {
-        session_start();
-
-        session_destroy();
-
-        header(
-            "Location: index.php?url=auth/login"
-        );
-
-        exit;
     }
 }
