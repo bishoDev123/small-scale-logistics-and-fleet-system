@@ -127,22 +127,28 @@ class AuthController
  
        }
 
-       public function register()
+    public function register()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            
+
             $name = $_POST['name'];
             $email = $_POST['email'];
-            $password = $_POST['password']; 
+            $password = $_POST['password'];
             $role_id = $_POST['role_id'];
 
             $employeeCode = null;
-            
+
             if ($role_id == 2 || $role_id == 3) {
                 $employeeCode = 'EMP-' . rand(1000, 9999);
             }
 
-            $success = User::register($name, $email, $password, $role_id, $employeeCode);
+            $success = User::register(
+                $name,
+                $email,
+                $password,
+                $role_id,
+                $employeeCode
+            );
 
             if ($success) {
                 header("Location: index.php?url=auth/login");
@@ -152,6 +158,7 @@ class AuthController
             echo "Registration failed. Email might already exist.";
             return;
         }
+
 
         require "views/register.php";
     }

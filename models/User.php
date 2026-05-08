@@ -35,26 +35,42 @@ class User
             AND password = ?
         ");
 
-        $stmt->bind_param(
-            "ss",
-            $email,
-            $password
-        );
-
+        $stmt->bind_param("ss", $email, $password);
         $stmt->execute();
 
         $result = $stmt->get_result();
 
         return $result->fetch_assoc();
     }
+
     public static function register($name, $email, $password, $role_id, $employeeCode)
     {
-        global $db; // افترض أن هذا هو متغير الاتصال بقاعدة البيانات الخاص بك
-        
+        $db = Database::connect();
+
         try {
-            $stmt = $db->prepare("INSERT INTO users (name, email, password, role_id, employee_code) VALUES (?, ?, ?, ?, ?)");
-            return $stmt->execute([$name, $email, $password, $role_id, $employeeCode]);
-        } catch (PDOException $e) {
+            $stmt = $db->prepare("
+            INSERT INTO users (name, email, password, role_id, employee_code)
+            VALUES (?, ?, ?, ?, ?)
+        ");
+
+            $stmt->bind_param(
+                "sssis",
+                $name,
+                $email,
+                $password,
+                $role_id,
+                $employeeCode
+            );
+
+            return $stmt->execute();
+        }
+        catch (mysqli_sql_exception $e) {
+
+            // Duplicate email (MySQL error code 1062)
+            if ($e->getCode() === 1062) {
+                return "EMAIL_EXISTS";
+            }
+
             return false;
         }
     }
