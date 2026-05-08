@@ -110,4 +110,29 @@ class Package
 
         return "Low";
     }
+    public static function calculateETA($package)
+    {
+        $eta = 30;
+
+        $eta += ($package['weight'] * 2);
+        $eta -= ($package['priority_score'] * 3);
+
+        if ($eta < 15) {
+            $eta = 15;
+        }
+
+        return round($eta);
+    }
+
+    public static function formatETA($minutes)
+    {
+        if ($minutes < 60) {
+            return $minutes . " mins";
+        }
+
+        $hours = floor($minutes / 60);
+        $mins = $minutes % 60;
+
+        return $hours . "h " . $mins . "m";
+    }
 }

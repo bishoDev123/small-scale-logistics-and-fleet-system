@@ -2,6 +2,8 @@
 
 require_once "models/Package.php";
 
+$packages = $packages ?? Package::getAll();
+
 ?>
 
 <!DOCTYPE html>
@@ -10,10 +12,7 @@ require_once "models/Package.php";
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>
         Fleeter Customer Portal
@@ -73,9 +72,7 @@ require_once "models/Package.php";
 
             display: grid;
 
-            grid-template-columns:
-                1fr
-                1fr;
+            grid-template-columns: 1fr 1fr;
 
             gap: 30px;
         }
@@ -209,20 +206,11 @@ require_once "models/Package.php";
             font-weight: bold;
         }
 
-        .high {
-            background: #dc2626;
-        }
-
-        .medium {
-            background: #d97706;
-        }
-
-        .low {
-            background: #16a34a;
-        }
+        .high { background: #dc2626; }
+        .medium { background: #d97706; }
+        .low { background: #16a34a; }
 
         @media (max-width: 900px) {
-
             .content-grid {
                 grid-template-columns: 1fr;
             }
@@ -230,7 +218,6 @@ require_once "models/Package.php";
             .hero h1 {
                 font-size: 42px;
             }
-
         }
 
     </style>
@@ -248,31 +235,25 @@ require_once "models/Package.php";
         </h1>
 
         <p>
-            Request package deliveries and let
-            Fleeter intelligently prioritize
-            your logistics operations.
+            Request package deliveries and track intelligent priority-based logistics in real time.
         </p>
 
     </div>
 
     <div class="content-grid">
 
+        <!-- REQUEST FORM -->
         <div class="glass-card">
 
             <h2>
                 Request Delivery
             </h2>
 
-            <form
-                method="POST"
-                action="index.php?url=customer/requestPackage"
-            >
+            <form method="POST" action="index.php?url=customer/requestPackage">
 
                 <div class="form-group">
 
-                    <label>
-                        Package Weight (kg)
-                    </label>
+                    <label>Package Weight (kg)</label>
 
                     <input
                         type="number"
@@ -285,23 +266,13 @@ require_once "models/Package.php";
 
                 <div class="form-group">
 
-                    <label>
-                        Customer Priority
-                    </label>
+                    <label>Customer Priority</label>
 
                     <select name="customer_priority">
 
-                        <option value="1">
-                            Normal
-                        </option>
-
-                        <option value="2">
-                            Important
-                        </option>
-
-                        <option value="3">
-                            VIP
-                        </option>
+                        <option value="1">Normal</option>
+                        <option value="2">Important</option>
+                        <option value="3">VIP</option>
 
                     </select>
 
@@ -309,23 +280,13 @@ require_once "models/Package.php";
 
                 <div class="form-group">
 
-                    <label>
-                        Promised Delivery Window
-                    </label>
+                    <label>Promised Delivery Window</label>
 
                     <select name="promised_window">
 
-                        <option value="72">
-                            72 Hours
-                        </option>
-
-                        <option value="48">
-                            48 Hours
-                        </option>
-
-                        <option value="24">
-                            24 Hours
-                        </option>
+                        <option value="72">72 Hours</option>
+                        <option value="48">48 Hours</option>
+                        <option value="24">24 Hours</option>
 
                     </select>
 
@@ -333,14 +294,9 @@ require_once "models/Package.php";
 
                 <div class="checkbox-group">
 
-                    <input
-                        type="checkbox"
-                        name="perishable"
-                    >
+                    <input type="checkbox" name="perishable">
 
-                    <label>
-                        Perishable Package
-                    </label>
+                    <label>Perishable Package</label>
 
                 </div>
 
@@ -352,6 +308,7 @@ require_once "models/Package.php";
 
         </div>
 
+        <!-- PACKAGE LIST -->
         <div class="glass-card">
 
             <h2>
@@ -363,12 +320,13 @@ require_once "models/Package.php";
                 <?php foreach ($packages as $package): ?>
 
                     <?php
-
                     $priorityLabel =
                         Package::getPriorityLabel(
                             $package['priority_score']
                         );
 
+                    $etaMinutes =
+                        Package::calculateETA($package);
                     ?>
 
                     <div class="package-card">
@@ -394,20 +352,16 @@ require_once "models/Package.php";
 
                         <p>
                             <strong>Delivery Window:</strong>
-                            <?= htmlspecialchars($package['promised_window']) ?>
-                            Hours
+                            <?= htmlspecialchars($package['promised_window']) ?> Hours
                         </p>
 
-                        <span
-                            class="
-                                priority
-                                <?= strtolower($priorityLabel) ?>
-                            "
-                        >
+                        <p>
+                            <strong>Estimated Arrival:</strong>
+                            <?= Package::formatETA($etaMinutes) ?>
+                        </p>
 
-                            <?= $priorityLabel ?>
-                            Priority
-
+                        <span class="priority <?= strtolower($priorityLabel) ?>">
+                            <?= $priorityLabel ?> Priority
                         </span>
 
                     </div>
