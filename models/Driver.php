@@ -199,4 +199,26 @@ class Driver
             ->get_result()
             ->fetch_all(MYSQLI_ASSOC);
     }
+    public static function getAssignedDeliveries($driverId)
+    {
+        $db = Database::connect();
+
+        $stmt = $db->prepare("
+        SELECT
+            packages.*,
+            deliveries.target_address,
+            deliveries.status AS delivery_status
+        FROM deliveries
+
+        JOIN packages
+        ON packages.delivery_id = deliveries.id
+
+        WHERE deliveries.driver_id = ?
+    ");
+
+        $stmt->bind_param("i", $driverId);
+        $stmt->execute();
+
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
 }

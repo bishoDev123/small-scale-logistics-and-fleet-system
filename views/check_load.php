@@ -51,31 +51,28 @@
 
 <?php foreach ($drivers as $driver): ?>
 
-    <div class="driver">
-
-        <h2>
-            <?= htmlspecialchars($driver['name']) ?>
-        </h2>
+    <div class="driver-card">
 
         <p>
-            Email:
-            <?= htmlspecialchars($driver['email']) ?>
+            <strong>Name:</strong>
+            <?= $driver['name'] ?>
         </p>
 
         <p>
-            Vehicle ID:
-            <?= $driver['vehicle_id'] ?>
-        </p>
-
-        <p>
-            Vehicle Capacity:
+            <strong>Vehicle Capacity:</strong>
             <?= $driver['capacity'] ?> kg
         </p>
 
-        <p>
-            License:
-            <?= htmlspecialchars($driver['license']) ?>
-        </p>
+        <form method="POST" action="index.php?url=dispatcher/assignDriver">
+
+            <input type="hidden" name="driver_id" value="<?= $driver['user_id'] ?>">
+            <input type="hidden" name="package_id" value="<?= $_GET['package_id'] ?>">
+
+            <button type="submit">
+                Assign Driver
+            </button>
+
+        </form>
 
     </div>
 
