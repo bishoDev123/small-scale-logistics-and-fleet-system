@@ -47,4 +47,15 @@ class User
 
         return $result->fetch_assoc();
     }
+    public static function register($name, $email, $password, $role_id, $employeeCode)
+    {
+        global $db; // افترض أن هذا هو متغير الاتصال بقاعدة البيانات الخاص بك
+        
+        try {
+            $stmt = $db->prepare("INSERT INTO users (name, email, password, role_id, employee_code) VALUES (?, ?, ?, ?, ?)");
+            return $stmt->execute([$name, $email, $password, $role_id, $employeeCode]);
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 }
