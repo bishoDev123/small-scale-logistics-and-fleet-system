@@ -1,19 +1,50 @@
 <?php
 
+require_once "models/Driver.php";
+
 class DriverController
 {
     public function index()
     {
+
         session_start();
 
-        if (
-            !isset($_SESSION['user']) ||
-            $_SESSION['user']['role_name']
-            !== 'Driver'
-        ) {
-            die("Access denied");
-        }
+        $user =
+            $_SESSION['user'];
+
+        $driver =
+            Driver::getDriverByUserId(
+                $user['id']
+            );
+
+        $vehicles =
+            Driver::getAvailableVehiclesByLicense(
+                $driver['license']
+            );
 
         require "views/driver.php";
+    }
+
+    public function assignVehicle()
+    {
+
+        session_start();
+
+        $user =
+            $_SESSION['user'];
+
+        $vehicleId =
+            $_POST['vehicle_id'];
+
+        Driver::assignVehicle(
+            $user['id'],
+            $vehicleId
+        );
+
+        header(
+            "Location: index.php?url=driver/index"
+        );
+
+        exit;
     }
 }

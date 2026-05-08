@@ -139,3 +139,37 @@ ALTER TABLE packages
     ADD COLUMN customer_priority INT NOT NULL DEFAULT 1,
 ADD COLUMN perishable_status TINYINT(1) NOT NULL DEFAULT 0,
 ADD COLUMN promised_window INT NOT NULL DEFAULT 72;
+
+ALTER TABLE drivers
+    ADD COLUMN ready_status TINYINT(1) NOT NULL DEFAULT 0;
+
+INSERT INTO drivers
+(
+    user_id,
+    license,
+    assigned_vehicle,
+    assigned_delivery,
+    performance_score,
+    ready_status
+)
+VALUES
+    (
+        2,
+        'B',
+        NULL,
+        NULL,
+        90,
+        0
+    );
+
+
+INSERT INTO vehicles
+(
+    capacity,
+    type,
+    status
+)
+VALUES
+    (1000, 1, 'Available'),
+    (2500, 2, 'Available'),
+    (5000, 3, 'Available');

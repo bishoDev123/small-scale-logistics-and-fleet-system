@@ -1,19 +1,39 @@
 <?php
 
+require_once "models/Driver.php";
+require_once "models/Package.php";
+
 class DispatcherController
 {
     public function index()
     {
-        session_start();
 
-        if (
-            !isset($_SESSION['user']) ||
-            $_SESSION['user']['role_name']
-            !== 'Dispatcher'
-        ) {
-            die("Access denied");
-        }
+        $packages =
+            Package::getAll();
 
         require "views/dispatcher.php";
+    }
+
+    public function checkLoad()
+    {
+
+        $packageId =
+            $_GET['package_id'];
+
+        $drivers =
+            Driver::getAvailableDriversForPackage(
+                $packageId
+            );
+
+        if ($drivers === false) {
+
+            http_response_code(404);
+
+            echo "404 Package Not Found";
+
+            return;
+        }
+
+        require "views/check_load.php";
     }
 }
