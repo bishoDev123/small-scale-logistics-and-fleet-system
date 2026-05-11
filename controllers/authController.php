@@ -129,6 +129,8 @@ class AuthController
 
     public function register()
     {
+        $db = Database::connect();
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $name = $_POST['name'];
@@ -139,27 +141,72 @@ class AuthController
             $employeeCode = null;
 
             if ($role_id == 2 || $role_id == 3) {
-                $employeeCode = 'EMP-' . rand(1000, 9999);
+                $employeeCode = 'DRIVER123';
             }
 
-            $success = User::register(
+            /*
+            |--------------------------------------------------------------------------
+            | 1. INSERT USER FIRST
+            |--------------------------------------------------------------------------
+            */
+
+            $stmt = $db->prepare("
+            INSERT INTO users (name, email, password, role_id, employee_code)
+            VALUES (?, ?, ?, ?, ?)
+        ");
+
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+            $stmt->bind_param(
+                "sssis",
                 $name,
                 $email,
-                $password,
+                $hashedPassword,
                 $role_id,
                 $employeeCode
             );
 
-            if ($success) {
-                header("Location: index.php?url=auth/login");
-                exit;
+            if (!$stmt->execute()) {
+                echo "Registration failed. Email might already exist.";
+                return;
             }
 
-            echo "Registration failed. Email might already exist.";
-            return;
+            /*
+            |--------------------------------------------------------------------------
+            | 2. GET AUTO-INCREMENT USER ID
+            |--------------------------------------------------------------------------
+            */
+
+            $userId = $db->insert_id;
+
+            /*
+            |--------------------------------------------------------------------------
+            | 3. INSERT DRIVER IF ROLE IS DRIVER
+            |--------------------------------------------------------------------------
+            */
+
+            if ($role_id == 3) {
+
+                $stmt2 = $db->prepare("
+                INSERT INTO drivers
+                (
+                    user_id,
+                    license,
+                    assigned_vehicle,
+                    assigned_delivery,
+                    performance_score,
+                    ready_status
+                )
+                VALUES (?, 'B', NULL, NULL, 100, 0)
+            ");
+
+                $stmt2->bind_param("i", $userId);
+                $stmt2->execute();
+            }
+
+            header("Location: index.php?url=auth/login");
+            exit;
         }
 
-
         require "views/register.php";
-    }
-}
+    }}
